@@ -8,3 +8,13 @@
    <img src="prototype.png" width="600px">
 </p>
 
+## Assembly Positions
+<p align="center">
+   <img src="AssemblyPositions.png" width="600px">
+</p>
+
+## Writing Diagram
+<p align="center">
+   <img src="WritingDiagram.png" width="600px">
+</p>
+
