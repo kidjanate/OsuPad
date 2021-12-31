@@ -1,4 +1,4 @@
-# Osu!Pad
+# OsuPad
  A 2k keypad for osu!
  
  [Testing](https://youtu.be/cbt6duyYUWE)
