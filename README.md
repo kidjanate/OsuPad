@@ -7,7 +7,7 @@
   * 2x Keyboard switches
   * 2x Keycaps
   * 1x Arduino Pro Micro
-  * 2z Short wires
+  * 2x Short wires
   * 1x Keychain rope
   * 2x LEDs
  
