@@ -25,7 +25,7 @@ Prepare your 4 plates of acrylic.
  * Put all switches to first plate and put the Arduino board on bottom of plate by switch pins will connect to pinout 3 and A3.
  * Put the secound and third plate on bottom of first plate then glue it.
  * Put all LEDs to the holes.
- * Connect them with the wires by following the [picture](Images/WritingDiagram.png) below.
+ * Connect them with the wires by following the [picture](Images/Assembly.png) below.
  * Put the fourth plate then glue it.
 <p align="center">
    <img src="Images/Assembly.png" width="300px">
