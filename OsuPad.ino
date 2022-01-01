@@ -15,6 +15,7 @@ void setup() {
     pinMode(ledPins[i], OUTPUT);
   }
   Keyboard.begin();
+  Serial.begin(19200);
 }
 
 void loop() {
@@ -29,4 +30,11 @@ void loop() {
       Keyboard.release(buttonOutputs[i]);
     }
   }
+  if(Serial.read() != -1){
+    String function = Serial.readString();
+    if(function == "connect"){
+      Serial.write("1");
+    }
+  }
+  delay(1);
 }
