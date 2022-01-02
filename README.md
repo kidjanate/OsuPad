@@ -1,6 +1,8 @@
 # OsuPad
 A 2k keypad for osu!, I made this keypad with my dad for a New Years gift.
 This repository will tell you every step in the process of making this.
+
+If you're already have your own OsuPad, you can config it by going to [https://osupad.kjn.in.th/](https://osupad.kjn.in.th/)
  
  ### Prepare Stuff
   * 4x 4 cm x 5 cm Acrylic
