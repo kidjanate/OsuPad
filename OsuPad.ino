@@ -51,12 +51,16 @@ void loop() {
     }
     if(function.startsWith("setkey-left")) {
       String key = getValue(function, ' ', 1);
+      if(stg.buttonOutputs[0] == key[0])
+        return;
       stg.buttonOutputs[0] = key[0];
       EEPROM.put(0, stg);
       Serial.print("1");
     }
     if(function.startsWith("setkey-right")) {
       String key = getValue(function, ' ', 1);
+      if(stg.buttonOutputs[1] == key[0])
+        return;
       stg.buttonOutputs[1] = key[0];
       EEPROM.put(0, stg);
       Serial.print("1");
