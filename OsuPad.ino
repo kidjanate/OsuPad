@@ -7,6 +7,7 @@ int ledPins[] = {16, 9};
 
 struct Settings {
   char buttonOutputs[4];
+  bool leds[4];
 };
 
 //Array Length
@@ -37,7 +38,9 @@ void loop() {
   for (int i = 0; i < btnCount; i++){
     //If button down
     if(digitalRead(buttonPins[i]) == LOW){
-      digitalWrite(ledPins[i], HIGH);
+      if(stg.leds[i]){
+        digitalWrite(ledPins[i], HIGH);
+      }
       Keyboard.press(stg.buttonOutputs[i]);
     }else{
       digitalWrite(ledPins[i], LOW);
@@ -47,11 +50,11 @@ void loop() {
   if(Serial.read() != -1){
     String function = Serial.readString();
     if(function.startsWith("connect")){
-      Serial.print("1:" + String(stg.buttonOutputs[0]) + String(';') + String(stg.buttonOutputs[1]));
+      Serial.print("1:" + String(stg.buttonOutputs[0]) + String(';') + String(stg.buttonOutputs[1]) + "!" + String(stg.leds[0]) + "@" + String(stg.leds[1]));
     }
     if(function.startsWith("setkey-left")) {
       String key = getValue(function, ' ', 1);
-      if(stg.buttonOutputs[0] == key[0])
+      if(stg.buttonOutputs[1] == key[0])
         return;
       stg.buttonOutputs[0] = key[0];
       EEPROM.put(0, stg);
@@ -68,6 +71,35 @@ void loop() {
     if(function.startsWith("config")) {;
       Serial.println("Left Key: "+ String(stg.buttonOutputs[0]));
       Serial.println("Right Key: "+ String(stg.buttonOutputs[1]));
+    }
+    if(function.startsWith("setled-left")) {
+      String raw = getValue(function, ' ', 1);
+      bool target = false;
+      if(raw[0] == '1'){
+        target = true;
+      }
+      if(stg.leds[0] == target){
+        Serial.print("0");
+        return;
+      }
+      stg.leds[0] = target;
+      EEPROM.put(0, stg);
+      Serial.print("1");
+    }
+    if(function.startsWith("setled-right")) {
+      String raw = getValue(function, ' ', 1);
+      bool target = false;
+      if(raw[0] == '1'){
+        target = true;
+      }
+      if(stg.leds[1] == target){
+        Serial.print("0");
+        return;
+      }
+        
+      stg.leds[1] = target;
+      EEPROM.put(0, stg);
+      Serial.print("1");
     }
   }
   delay(1);
