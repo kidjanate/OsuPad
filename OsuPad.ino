@@ -1,3 +1,4 @@
+#include <Mouse.h>
 #include <EEPROM.h>
 #include <Keyboard.h>
 
@@ -8,6 +9,9 @@ int ledPins[] = {16, 9};
 struct Settings {
   char buttonOutputs[4];
   bool leds[4];
+  bool isUseMouse[4] = {false, false, false, false};
+  bool mouseClick[4];
+  int mouseDelay[4];
 };
 
 //Array Length
@@ -23,14 +27,32 @@ void setup() {
     pinMode(ledPins[i], OUTPUT);
   }
   Keyboard.begin();
+  Mouse.begin();
+  
   Serial.begin(115200);
 
   EEPROM.get(0, stg);
-  if(stg.buttonOutputs[0] == '\0' && stg.buttonOutputs[1] == '\0'){
-    stg.buttonOutputs[0] = 'd';
-    stg.buttonOutputs[1] = 'f';
-  }
-  Serial.println("[] The controller is ready!");
+
+
+  /*
+  stg.buttonOutputs[0] = 'd';
+  stg.buttonOutputs[1] = 'f';
+  stg.isUseMouse[0] = false;
+  stg.isUseMouse[1] = false;
+  stg.isUseMouse[2] = false;
+  stg.isUseMouse[3] = false;
+  stg.mouseClick[0] = false;
+  stg.mouseClick[1] = false;
+  stg.mouseClick[2] = false;
+  stg.mouseClick[3] = false;
+  stg.mouseDelay[0] = 50;
+  stg.mouseDelay[1] = 50;
+  stg.mouseDelay[2] = 50;
+  stg.mouseDelay[3] = 50;
+  EEPROM.put(0, stg);
+  */
+  
+  Serial.println("[System] The controller is ready!");
 }
 
 void loop() {
@@ -41,7 +63,19 @@ void loop() {
       if(stg.leds[i]){
         digitalWrite(ledPins[i], HIGH);
       }
-      Keyboard.press(stg.buttonOutputs[i]);
+      if(stg.isUseMouse[i]){
+        if(stg.mouseClick[i]){
+          Mouse.press(MOUSE_RIGHT);
+          delay(stg.mouseDelay[i]);
+          Mouse.release(MOUSE_RIGHT);
+        }else{
+          Mouse.press(MOUSE_LEFT);
+          delay(stg.mouseDelay[i]);
+          Mouse.release(MOUSE_LEFT);
+        }
+      }else{
+        Keyboard.press(stg.buttonOutputs[i]);
+      }
     }else{
       digitalWrite(ledPins[i], LOW);
       Keyboard.release(stg.buttonOutputs[i]);
@@ -98,6 +132,66 @@ void loop() {
       }
         
       stg.leds[1] = target;
+      EEPROM.put(0, stg);
+      Serial.print("1");
+    }
+    if(function.startsWith("setmouse-left")) {
+      String raw = getValue(function, ' ', 1);
+      bool target = false;
+      if(raw[0] == '1'){
+        target = true;
+      }
+      if(stg.isUseMouse[0] == target){
+        Serial.print("0");
+        return;
+      }
+        
+      stg.isUseMouse[0] = target;
+      EEPROM.put(0, stg);
+      Serial.print("1");
+    }
+    if(function.startsWith("setmouse-right")) {
+      String raw = getValue(function, ' ', 1);
+      bool target = false;
+      if(raw[0] == '1'){
+        target = true;
+      }
+      if(stg.isUseMouse[1] == target){
+        Serial.print("0");
+        return;
+      }
+        
+      stg.isUseMouse[1] = target;
+      EEPROM.put(0, stg);
+      Serial.print("1");
+    }
+    if(function.startsWith("setmousekey-left")) {
+      String raw = getValue(function, ' ', 1);
+      bool target = false;
+      if(raw[0] == '1'){
+        target = true;
+      }
+      if(stg.mouseClick[0] == target){
+        Serial.print("0");
+        return;
+      }
+        
+      stg.mouseClick[0] = target;
+      EEPROM.put(0, stg);
+      Serial.print("1");
+    }
+    if(function.startsWith("setmousekey-right")) {
+      String raw = getValue(function, ' ', 1);
+      bool target = false;
+      if(raw[0] == '1'){
+        target = true;
+      }
+      if(stg.mouseClick[1] == target){
+        Serial.print("0");
+        return;
+      }
+        
+      stg.mouseClick[1] = target;
       EEPROM.put(0, stg);
       Serial.print("1");
     }
